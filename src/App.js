@@ -7,7 +7,8 @@ function App() {
       <button type="button" class="btn btn-warning">Warning</button>
     </div>
 
-    
+
+
   );
 }
 
