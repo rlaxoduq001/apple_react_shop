@@ -5,12 +5,15 @@ import { Navbar ,Container,Nav,NavDropdown} from 'react-bootstrap';
 import './App.css';
 import { useState } from 'react';
 import data from './data.js'
-import { Routes, Route, Link } from 'react-router-dom';
-import Detail from './Detail.js'
+import { Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom';
+import Detail from './routes/Detail.js'
+import About from './routes/About.js';
+import Event from './routes/Event.js'
 
 function App() {
 
   let [ shoes ] = useState(data);
+  let navigate = useNavigate();
   
   return (
     <div className="App">
@@ -21,8 +24,11 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
+              {/* navigate(-1) 뒤로가기 */}
+              <Nav.Link onClick={ () => { navigate('/') } }>Home</Nav.Link>
               <Nav.Link href="#link">Link</Nav.Link>
+              <Nav.Link onClick={ () => { navigate('/detail') } }>Detail</Nav.Link>
+              <Nav.Link onClick={ () => { navigate('/Event') } }>Evnet</Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -58,7 +64,20 @@ function App() {
               </div>
           </>
         }/>
-        <Route path='/detail' element={ <Detail/> } />
+        {/* URL 파라미터 넘기기 (라우터) */}
+        <Route path='/detail/:id' element={ <Detail shoes={shoes} /> } />
+        
+        <Route path='/about' element={ <About/> }>
+          <Route path='member' element={ <div>멤버</div> } />
+          <Route path='location' element={ <div>위치정보</div> } />
+        </Route>
+
+        <Route path='/Event' element={ <About/> }>
+          <Route path='one' element={ <div>첫 주문 양배추즙</div> } />
+          <Route path='two' element={ <div>생일기념 쿠폰</div> } />
+        </Route>
+
+        <Route path='*' element={ <div>404 Page</div> } />
       </Routes>
 
       </div>
