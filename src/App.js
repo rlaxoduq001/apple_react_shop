@@ -12,7 +12,7 @@ import Event from './routes/Event.js'
 
 function App() {
 
-  let [ shoes ] = useState(data);
+  let [ shoes , setShoes] = useState(data);
   let navigate = useNavigate();
   
   return (
@@ -41,7 +41,13 @@ function App() {
 
           <Link to="/">홈</Link>
           <Link to="/detail">상세페이지</Link>
+          <button onClick={() => {
 
+            let copy = [...shoes];
+            let copy2 = copy.sort( (a,b) => a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1)
+            setShoes(copy2);
+            
+          }}>정렬</button>
         </Container>
       </Navbar>
       
@@ -65,7 +71,7 @@ function App() {
           </>
         }/>
         {/* URL 파라미터 넘기기 (라우터) */}
-        <Route path='/detail/:id' element={ <Detail shoes={shoes} /> } />
+        <Route path='/detail/:id' element={ <Detail shoes={shoes}/> } />
         
         <Route path='/about' element={ <About/> }>
           <Route path='member' element={ <div>멤버</div> } />
