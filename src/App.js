@@ -27,7 +27,7 @@ function App() {
               {/* navigate(-1) 뒤로가기 */}
               <Nav.Link onClick={ () => { navigate('/') } }>Home</Nav.Link>
               <Nav.Link href="#link">Link</Nav.Link>
-              <Nav.Link onClick={ () => { navigate('/detail') } }>Detail</Nav.Link>
+              <Nav.Link onClick={ () => { navigate('/detail/0') } }>Detail</Nav.Link>
               <Nav.Link onClick={ () => { navigate('/Event') } }>Evnet</Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -58,15 +58,15 @@ function App() {
           <>
             <div className='main-bg'></div>
               <div className='container'>
-                <div className='row'>
                   {
                     shoes.map( (shoesItem,i) => {
                       return (
-                        <ShoesInfo item={ shoesItem } i={i+1} key={i}></ShoesInfo>
+                        <Nav.Link onClick={ () => { navigate('/detail/'+i) } } key={i}>
+                          <ShoesInfo item={ shoesItem } i={i+1} ></ShoesInfo>
+                        </Nav.Link>
                       )
                     })
                   }
-                </div>
               </div>
           </>
         }/>
