@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
-
+import { Nav } from "react-bootstrap";
+import { Context1 } from "./../App.js";
 
 // styled-components!
 
@@ -37,6 +38,7 @@ import styled from 'styled-components';
 
 const Detail = (props) => {
 
+  let {재고, shose} = useContext(Context1);
 
   let [ count , setCount ] = useState(0);
   let divRef = useRef();
@@ -48,6 +50,7 @@ const Detail = (props) => {
 
   let [ alert , setAlert] = useState(true);
   let [ inputVal , setInputVal ] = useState('');
+  let [ tab , setTab] = useState(0);
 
   // useEffect Lifecycle
   useEffect( () => {
@@ -123,6 +126,7 @@ const Detail = (props) => {
         <YellowBtn bg="blue">버튼</YellowBtn>
         <YellowBtn bg="yellow">버튼</YellowBtn>
       </Box> */}
+
       <div className="row">
         <div className="col-md-6">
           <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" />
@@ -135,7 +139,53 @@ const Detail = (props) => {
           <button className="btn btn-danger">주문하기</button> 
         </div>
       </div>
+
+    <Nav variant="tabs"  defaultActiveKey="link0">
+      <Nav.Item>
+        <Nav.Link onClick={() => {setTab(0)}} eventKey="link0">버튼0</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link onClick={() => {setTab(1)}} eventKey="link1">버튼1</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link onClick={() => {setTab(2)}} eventKey="link2">버튼2</Nav.Link>
+      </Nav.Item>
+    </Nav>
+
+
+    <TabContent shoes={props.shoes} tab={tab} />
+
     </div> 
+  )
+}
+
+function TabContent({tab,shoes}) {
+  // if( props.tab === 0 ) {
+  //   return <div>내용0</div>
+  // }
+  // if( props.tab === 1 ) {
+  //   return <div>내용1</div>
+  // }
+  // if( props.tab === 2 ) {
+  //   return <div>내용2</div>
+  // }
+
+  // useMemo
+  let {재고, shose} = useContext(Context1);
+
+  let [fade , setFade] = useState('');
+  useEffect( () => {
+    setTimeout(() => {setFade('end')}, 100)
+    return () => {
+      setFade('');
+    }
+  }, [tab])
+
+  return (
+    <div className={'start '+fade }>
+      
+      { [<div>{shoes[0].title}</div>, <div>{재고}</div>, <div>내용2</div>][tab] }
+    </div>
   )
 }
 

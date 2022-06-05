@@ -3,16 +3,20 @@
 import logo from './logo.svg';
 import { Navbar ,Container,Nav,NavDropdown} from 'react-bootstrap';
 import './App.css';
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 import data from './data.js'
 import { Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom';
 import Detail from './routes/Detail.js'
 import About from './routes/About.js';
-import Event from './routes/Event.js'
+import Event from './routes/Event.js';
+import axios from 'axios';
+
+export let Context1 = createContext();
 
 function App() {
 
   let [ shoes , setShoes] = useState(data);
+  let [ 재고 ] = useState([10,11,12]);
   let navigate = useNavigate();
   
   return (
@@ -68,10 +72,25 @@ function App() {
                     })
                   }
               </div>
+              <button onClick={() => {
+                axios.get('https://codingapple1.github.io/shop/data2.json')
+                .then(resp => {
+                  console.log(resp);
+                  let copy = [...shoes , ...resp.data];
+                  setShoes(copy);
+                })
+
+                // Promise.all([ 첫번째 요청, 두번째요청 ]).then
+                
+              }}>더보기</button>
           </>
         }/>
         {/* URL 파라미터 넘기기 (라우터) */}
-        <Route path='/detail/:id' element={ <Detail shoes={shoes}/> } />
+        <Route path='/detail/:id' element={ 
+          <Context1.Provider value={{ 재고, shoes}}>
+            <Detail shoes={shoes}/>  
+          </Context1.Provider>
+        }/>
         
         <Route path='/about' element={ <About/> }>
           <Route path='member' element={ <div>멤버</div> } />
