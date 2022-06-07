@@ -10,6 +10,7 @@ import Detail from './routes/Detail.js'
 import About from './routes/About.js';
 import Event from './routes/Event.js';
 import axios from 'axios';
+import Cart from './routes/Cart';
 
 export let Context1 = createContext();
 
@@ -45,6 +46,7 @@ function App() {
 
           <Link to="/">홈</Link>
           <Link to="/detail">상세페이지</Link>
+          <Link to="/cart">카트</Link>
           <button onClick={() => {
 
             let copy = [...shoes];
@@ -92,6 +94,8 @@ function App() {
           </Context1.Provider>
         }/>
         
+        <Route path='/cart' element= { <Cart></Cart>}/>
+
         <Route path='/about' element={ <About/> }>
           <Route path='member' element={ <div>멤버</div> } />
           <Route path='location' element={ <div>위치정보</div> } />

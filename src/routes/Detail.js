@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Nav } from "react-bootstrap";
 import { Context1 } from "./../App.js";
+import { addItem } from './../store';
 
 // styled-components!
 
@@ -37,6 +39,8 @@ import { Context1 } from "./../App.js";
 // }
 
 const Detail = (props) => {
+
+  let dispatch = useDispatch();
 
   let {재고, shose} = useContext(Context1);
 
@@ -136,7 +140,10 @@ const Detail = (props) => {
           <h4 className="pt-5">{props.shoes[id].title}</h4>
           <p>{props.shoes[id].content}</p>
           <p>{props.shoes[id].price}</p>
-          <button className="btn btn-danger">주문하기</button> 
+          <button className="btn btn-danger" onClick={() =>{
+            console.log(props.shoes[id]);
+            dispatch( addItem( {id:2, name: 'grey yordan', count: 1} ) );
+          }}>주문하기</button> 
         </div>
       </div>
 
