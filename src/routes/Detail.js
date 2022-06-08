@@ -56,6 +56,21 @@ const Detail = (props) => {
   let [ inputVal , setInputVal ] = useState('');
   let [ tab , setTab] = useState(0);
 
+
+  // 최근본상품
+  useEffect( () => {
+    console.log(findShoesId.id);
+    
+    let getShoesId = localStorage.getItem('watched');
+    getShoesId = JSON.parse(getShoesId);
+    getShoesId.push(findShoesId.id)
+    getShoesId = new Set(getShoesId);
+    getShoesId = Array.from(getShoesId);
+    localStorage.setItem('watched', JSON.stringify(getShoesId))
+  }, [])
+
+
+
   // useEffect Lifecycle
   useEffect( () => {
     // mount,update시 실행

@@ -3,23 +3,48 @@
 import logo from './logo.svg';
 import { Navbar ,Container,Nav,NavDropdown} from 'react-bootstrap';
 import './App.css';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import data from './data.js'
 import { Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom';
+
+
 import Detail from './routes/Detail.js'
+// 필요해질때 import 방법
+// const Detail = lazy( () => import('./routes/Detail.js'));
+
 import About from './routes/About.js';
 import Event from './routes/Event.js';
 import axios from 'axios';
 import Cart from './routes/Cart';
+import { useQuery } from 'react-query';
 
 export let Context1 = createContext();
 
 function App() {
 
+  useEffect( ()=> {
+    if( !localStorage.getItem('watched') ) {
+      localStorage.setItem('watched', JSON.stringify([]))
+    }
+  },[])
+
   let [ shoes , setShoes] = useState(data);
   let [ 재고 ] = useState([10,11,12]);
   let navigate = useNavigate();
   
+  // react-query - 실시간 데이터
+  let result = useQuery('작명' , () => {
+    axios.get('https://codingapple1.github.io/userdata.json').then((a) => {
+      return a.data;
+    })
+  }) 
+
+  // axios 요청 성공
+  // result.data 
+  // axios 요청 로딩중일때 true
+  // result.isLoading
+  // axios 실패했을때
+  // result.error
   return (
     <div className="App">
 
@@ -47,6 +72,7 @@ function App() {
           <Link to="/">홈</Link>
           <Link to="/detail">상세페이지</Link>
           <Link to="/cart">카트</Link>
+          
           <button onClick={() => {
 
             let copy = [...shoes];
@@ -54,6 +80,7 @@ function App() {
             setShoes(copy2);
             
           }}>정렬</button>
+          <div>{ result.isLoading && '로딩중'}</div>
         </Container>
       </Navbar>
       
